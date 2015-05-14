@@ -6,4 +6,4 @@
 * [NLTK] (http://www.nltk.org/) (we'll use this one later)
 
 ###How?
-	python tokenizer.py
+	python tokenizer.py# a1snlp
