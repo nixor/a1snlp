@@ -10,7 +10,7 @@ import matplotlib.pyplot  as pyplot
 #import matplotlib.pyplot  as pyplot
 
 
-SPLITTING_CHAR_SET = (' ', ',', ".", '!', '?', ';', ':')
+SPLITTING_CHAR_SET = (' ', ',', ".", '!', '?', ';', ':', "'")
 NON_TOKEN_CHARS = (' ')
 
 def main():
@@ -18,9 +18,11 @@ def main():
 	f = open('./data/tom_sawyer_en.txt', 'r')
 	
 	token_list_en = []
+	
 	for line in f:
 		# enforcing lower case representation
 		token_list_en.extend(tokenize(line.lower()))
+		# // Here after the each 
 
 	print("%d English tokens in general..." % len(token_list_en))
 	print("computing frequencies...")
@@ -28,7 +30,7 @@ def main():
 	print("%d unique English tokens..." % len(freq_en))
 	print(freq_en[0:100])
 	for i,j in enumerate(freq_en[0:100]):
-		print (str(freq_en[i][0]) + "   |   " + str(freq_en[i][1]))
+		print (str(freq_en[i][0]) + "   |   " + str(freq_en[i][1]) + "   |   " + str((freq_en[i][1])*(i+1)))
 	f.close()
 
 	f = open('./data/tom_sawyer_de.txt', 'r')
@@ -41,6 +43,9 @@ def main():
 	print("computing frequencies...")
 	freq_de = get_frequency_list(token_list_de)
 	print("%d unique Deutsch tokens..." % len(freq_de))
+	print(freq_de[0:100])
+	for i,j in enumerate(freq_de[0:100]):
+		print (str(freq_de[i][0]) + "   |   " + str(freq_de[i][1]) + "   |   " + str((freq_de[i][1])*(i+1)))
 	f.close()
 
 	f = open('./data/tom_sawyer_fin.txt', 'r')
@@ -49,10 +54,13 @@ def main():
 		# enforcing lower case representation
 		token_list_fin.extend(tokenize(line.lower()))
 	
-	print("%d Finish tokens in general..." % len(token_list_fin))
+	print("%d Finnish tokens in general..." % len(token_list_fin))
 	print("computing frequencies...")
 	freq_fin = get_frequency_list(token_list_fin)
 	print("%d unique Finish tokens..." % len(freq_fin))
+	print(freq_fin[0:100])
+	for i,j in enumerate(freq_fin[0:100]):
+		print (str(freq_fin[i][0]) + "   |   " + str(freq_fin[i][1]) + "   |   " + str((freq_fin[i][1])*(i+1)))
 	f.close()
 
 	print("displaying zipf plot...")
@@ -61,11 +69,12 @@ def main():
 
 
 
-def tokenize(s):
+def tokenize(s):   # // takes line.lower()
 	tokens, token = [], ''
 	for c in s:
 		if c in SPLITTING_CHAR_SET:
-			tokens.append(token)
+			if token:
+				tokens.append(token)
 			if c not in NON_TOKEN_CHARS:
 				tokens.append(c) # adding special characters as separate tokens
 			token = ''
@@ -93,7 +102,7 @@ def plot_zipf(*freq):
 			frequencies.append([e[1] for e in freq[i]])
 
 			# log x and y axis	
-			plt.loglog(ranks[i], frequencies[i], basex=2, color=colors[i], label=langs[i])
+			plt.loglog(ranks[i], frequencies[i], basex=10, color=colors[i], label=langs[i])
 
 		plt.legend()
 		plt.grid(True)
